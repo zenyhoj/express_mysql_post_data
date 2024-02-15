@@ -18,6 +18,7 @@ conn.connect((err) => {
   }
   console.log("connected to db");
   app.post("/post", (req, res) => {
+    //#region req.body.forEach
     req.body.forEach((el) => {
       const ps_id = el.ps_id;
       const date = el.date;
@@ -32,6 +33,7 @@ conn.connect((err) => {
       const genset_production = el.genset_production;
       const newId = el.id;
 
+      //#region conn.query
       conn.query(
         "INSERT INTO pump_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
         [
@@ -56,9 +58,13 @@ conn.connect((err) => {
           res.send("Pump data successfully posted");
         }
       );
+      //#endregion
     });
+
+    //#endregion
   });
 
+  //#region listen to port 3000
   app.listen(3000, (err) => {
     if (err) {
       console.error("Error starting server:", err);
@@ -66,4 +72,5 @@ conn.connect((err) => {
     }
     console.log("listening on port 3000");
   });
+  //#endregion
 });
