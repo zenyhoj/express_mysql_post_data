@@ -17,45 +17,46 @@ conn.connect((err) => {
     return; // or throw err if you want to terminate the application
   }
   console.log("connected to db");
-
   app.post("/post", (req, res) => {
-    const ps_id = req.body.ps_id;
-    const date = req.body.date;
-    const pumping_hours = req.body.pumping_hours;
-    const motor_production = req.body.motor_production;
-    const chlorine_consume = req.body.chlorine_consume;
-    const discharge = req.body.discharge;
-    const bypass_time = req.body.bypass_time;
-    const bypass_cubic_meter = req.body.bypass_cubic_meter;
-    const genset_hours = req.body.genset_hours;
-    const fuel_consume = req.body.fuel_consume;
-    const genset_production = req.body.genset_production;
-    const newId = req.body.id;
+    req.body.forEach((el) => {
+      const ps_id = el.ps_id;
+      const date = el.date;
+      const pumping_hours = el.pumping_hours;
+      const motor_production = el.motor_production;
+      const chlorine_consume = el.chlorine_consume;
+      const discharge = el.discharge;
+      const bypass_time = el.bypass_time;
+      const bypass_cubic_meter = el.bypass_cubic_meter;
+      const genset_hours = el.genset_hours;
+      const fuel_consume = el.fuel_consume;
+      const genset_production = el.genset_production;
+      const newId = el.id;
 
-    conn.query(
-      "INSERT INTO pump_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
-      [
-        newId,
-        ps_id,
-        date,
-        pumping_hours,
-        motor_production,
-        chlorine_consume,
-        discharge,
-        bypass_time,
-        bypass_cubic_meter,
-        genset_hours,
-        fuel_consume,
-        genset_production,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          return res.status(500).send("Error executing query");
+      conn.query(
+        "INSERT INTO pump_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+        [
+          newId,
+          ps_id,
+          date,
+          pumping_hours,
+          motor_production,
+          chlorine_consume,
+          discharge,
+          bypass_time,
+          bypass_cubic_meter,
+          genset_hours,
+          fuel_consume,
+          genset_production,
+        ],
+        (err, result) => {
+          if (err) {
+            console.error("Error executing query:", err);
+            return res.status(500).send("Error executing query");
+          }
+          res.send("Pump data successfully posted");
         }
-        res.send("Pump data successfully posted");
-      }
-    );
+      );
+    });
   });
 
   app.listen(3000, (err) => {
