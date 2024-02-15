@@ -55,11 +55,13 @@ conn.connect((err) => {
             console.error("Error executing query:", err);
             return res.status(500).send("Error executing query");
           }
-          res.send("Pump data successfully posted");
+          // res.send("Pump data successfully posted"); //original position
         }
       );
       //#endregion
     });
+
+    res.send("Pump data successfully posted");
 
     //#endregion
   });
