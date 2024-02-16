@@ -11,6 +11,7 @@ const conn = mysql.createConnection({
   database: "production",
 });
 
+//#region -- Posting of Pump Data to MySQL Database
 conn.connect((err) => {
   if (err) {
     console.error("Error connecting to database:", err);
@@ -33,7 +34,6 @@ conn.connect((err) => {
       const genset_production = el.genset_production;
       const newId = el.id;
 
-      //#region conn.query
       conn.query(
         "INSERT INTO pump_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
         [
@@ -58,15 +58,11 @@ conn.connect((err) => {
           // res.send("Pump data successfully posted"); //original position
         }
       );
-      //#endregion
     });
 
     res.send("Pump data successfully posted");
-
-    //#endregion
   });
 
-  //#region listen to port 3000
   app.listen(3000, (err) => {
     if (err) {
       console.error("Error starting server:", err);
@@ -74,5 +70,5 @@ conn.connect((err) => {
     }
     console.log("listening on port 3000");
   });
-  //#endregion
 });
+//#endregion
