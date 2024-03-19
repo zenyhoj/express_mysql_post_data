@@ -19,7 +19,6 @@ conn.connect((err) => {
   }
   console.log("connected to db");
   app.post("/post", (req, res) => {
-    //#region req.body.forEach
     req.body.forEach((el) => {
       const ps_id = el.ps_id;
       const date = el.date;
@@ -71,5 +70,3 @@ conn.connect((err) => {
     console.log("listening on port 3000");
   });
 });
-
-//#endregion
