@@ -18,6 +18,7 @@ conn.connect((err) => {
     return; // or throw err if you want to terminate the application
   }
   console.log("connected to db");
+
   app.post("/post", (req, res) => {
     req.body.forEach((el) => {
       const ps_id = el.ps_id;
@@ -31,12 +32,11 @@ conn.connect((err) => {
       const genset_hours = el.genset_hours;
       const fuel_consume = el.fuel_consume;
       const genset_production = el.genset_production;
-      const newId = el.id;
 
+      // Remove newId from the insert statement if id is auto-incrementing
       conn.query(
-        "INSERT INTO pump_data VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO pump_data (ps_id, date, pumping_hours, motor_production, chlorine_consume, discharge, bypass_time, bypass_cubic_meter, genset_hours, fuel_consume, genset_production) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
-          newId,
           ps_id,
           date,
           pumping_hours,
@@ -54,7 +54,6 @@ conn.connect((err) => {
             console.error("Error executing query:", err);
             return res.status(500).send("Error executing query");
           }
-          // res.send("Pump data successfully posted"); //original position
         }
       );
     });
